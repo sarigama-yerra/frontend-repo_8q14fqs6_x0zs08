@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ShoppingCart, ChevronRight, ArrowRight, User, Menu, CheckCircle2, Loader2 } from 'lucide-react'
+import { ShoppingCart, ChevronRight, ArrowRight, User, Menu, CheckCircle2, Loader2, Images } from 'lucide-react'
 
 const BACKEND = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000'
 
@@ -17,6 +17,7 @@ function Navbar({ onOpenAuth, cartCount }) {
         <div className="hidden md:flex items-center gap-8 text-sm text-gray-700">
           <a href="#shop" className="hover:text-black">Shop Printers</a>
           <a href="#service" className="hover:text-black">Custom Printing</a>
+          <a href="#gallery" className="hover:text-black">Gallery</a>
           <a href="#account" className="hover:text-black">Account</a>
         </div>
         <div className="flex items-center gap-3">
@@ -36,6 +37,7 @@ function Navbar({ onOpenAuth, cartCount }) {
             <div className="px-4 py-3 space-y-2 text-sm">
               <a href="#shop" className="block">Shop Printers</a>
               <a href="#service" className="block">Custom Printing</a>
+              <a href="#gallery" className="block">Gallery</a>
               <a href="#account" className="block">Account</a>
             </div>
           </motion.div>
@@ -110,8 +112,8 @@ function ProductCard({ product, onAddToCart }) {
   const price = useInr(product.price_inr)
   return (
     <motion.div whileHover={{y:-6}} className="rounded-2xl border p-4 bg-white shadow-sm">
-      <div className="aspect-video rounded-xl bg-gray-100 overflow-hidden">
-        <img src={product.image} alt={product.title} className="w-full h-full object-cover" />
+      <div className="aspect-video rounded-xl bg-gray-50 overflow-hidden">
+        <img src={product.image} alt={product.title} className="w-full h-full object-cover" loading="lazy" />
       </div>
       <div className="mt-4">
         <div className="flex items-start justify-between gap-4">
@@ -254,6 +256,97 @@ function Info({label, value}){ return (
   </div>
 )}
 
+function SwatchGallery(){
+  const swatches = [
+    { name: 'Ivory 10', hex: '#F5E9DA' },
+    { name: 'Almond 20', hex: '#EAD8C1' },
+    { name: 'Honey 30', hex: '#D8B999' },
+    { name: 'Caramel 40', hex: '#C89A75' },
+    { name: 'Bronze 50', hex: '#A8715A' },
+    { name: 'Cocoa 60', hex: '#7B4B36' },
+    { name: 'Espresso 70', hex: '#593827' },
+    { name: 'Onyx 80', hex: '#3C2A20' },
+  ]
+  return (
+    <section id="gallery" className="py-16 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl sm:text-3xl font-bold flex items-center gap-2"><Images size={22}/> Skin‑tone Swatches</h2>
+          <p className="text-sm text-gray-600">Curated for light backgrounds • calibrated references</p>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
+          {swatches.map((s,i)=> (
+            <div key={i} className="group">
+              <div className="aspect-square rounded-2xl border shadow-sm" style={{background:s.hex}} aria-label={`${s.name} swatch`} />
+              <div className="mt-2 text-xs text-gray-700 font-medium">{s.name}</div>
+              <div className="text-[11px] text-gray-500">{s.hex}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function SamplePrints(){
+  // Light‑background friendly imagery (Unsplash, royalty‑free), intentionally bright backdrops
+  const items = [
+    {
+      title: 'Textured Vase',
+      src: 'https://images.unsplash.com/photo-1730195986404-2749e395935e?ixid=M3w3OTkxMTl8MHwxfHNlYXJjaHwxfHxUZXh0dXJlZCUyMFZhc2V8ZW58MHwwfHx8MTc2MzMzNjIwOHww&ixlib=rb-4.1.0&w=1600&auto=format&fit=crop&q=80',
+      desc: 'PLA • Matte finish • Sand‑beige tone'
+    },
+    {
+      title: 'Organic Sculpture',
+      src: 'https://images.unsplash.com/photo-1594514094203-aae729c9e7a9?ixid=M3w3OTkxMTl8MHwxfHNlYXJjaHwxfHxPcmdhbmljJTIwU2N1bHB0dXJlfGVufDB8MHx8fDE3NjMzMzYyMDh8MA&ixlib=rb-4.1.0&w=1600&auto=format&fit=crop&q=80',
+      desc: 'Resin • High‑gloss • Warm ivory'
+    },
+    {
+      title: 'Geometric Lamp',
+      src: 'https://images.unsplash.com/photo-1628176679578-d9600421d8e7?ixid=M3w3OTkxMTl8MHwxfHNlYXJjaHwxfHxHZW9tZXRyaWMlMjBMYW1wfGVufDB8MHx8fDE3NjMzMzYyMDl8MA&ixlib=rb-4.1.0&w=1600&auto=format&fit=crop&q=80',
+      desc: 'PLA • Smooth • Honey 30'
+    },
+    {
+      title: 'Precision Prototype',
+      src: 'https://images.unsplash.com/photo-1742971366169-6efb57949d56?ixid=M3w3OTkxMTl8MHwxfHNlYXJjaHwxfHxQcmVjaXNpb24lMjBQcm90b3R5cGV8ZW58MHwwfHx8MTc2MzMzNjIwOXww&ixlib=rb-4.1.0&w=1600&auto=format&fit=crop&q=80',
+      desc: 'Nylon • Standard • Light studio'
+    },
+    {
+      title: 'Minimal Figurine',
+      src: 'https://images.unsplash.com/photo-1579403124614-197f69d8187b?q=80&w=1200&auto=format&fit=crop',
+      desc: 'Resin • Gloss • Neutral background'
+    },
+    {
+      title: 'Architectural Mock',
+      src: 'https://images.unsplash.com/photo-1562405393-e53fae44ed8f?ixid=M3w3OTkxMTl8MHwxfHNlYXJjaHwxfHxBcmNoaXRlY3R1cmFsJTIwTW9ja3xlbnwwfDB8fHwxNzYzMzM2MjEwfDA&ixlib=rb-4.1.0&w=1600&auto=format&fit=crop&q=80',
+      desc: 'PETG • Smooth • Bright desk'
+    },
+  ]
+  return (
+    <section className="py-16 bg-gradient-to-b from-white to-amber-50/40">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-end justify-between mb-6">
+          <h2 className="text-2xl sm:text-3xl font-bold">Sample Prints</h2>
+          <p className="text-sm text-gray-600">Shot on light backgrounds for premium clarity</p>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {items.map((it, i)=> (
+            <motion.figure key={i} whileHover={{y:-4}} className="rounded-2xl border bg-white shadow-sm overflow-hidden">
+              <div className="aspect-[4/3] bg-gray-50">
+                <img src={it.src} alt={it.title} className="w-full h-full object-cover" loading="lazy" />
+              </div>
+              <figcaption className="p-4">
+                <div className="font-semibold">{it.title}</div>
+                <div className="text-sm text-gray-600">{it.desc}</div>
+              </figcaption>
+            </motion.figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function AuthModal({ open, onClose, onAuthenticated }){
   const [email, setEmail] = useState('ankitmht42@gmail.com')
   const [password, setPassword] = useState('Ankitmehta007')
@@ -351,6 +444,8 @@ export default function App(){
       <main>
         <Hero />
         <Shop onAddToCart={addToCart} />
+        <SamplePrints />
+        <SwatchGallery />
         <Estimator onLoginRequired={()=>setAuthOpen(true)} authToken={auth.token} />
         <Account user={auth.user} />
       </main>
